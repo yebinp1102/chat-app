@@ -2,6 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 const PORT = process.env.PORT || 5000
+const authRoutes = require('./routes/auth.js');
 require('dotenv').config();
 
 app.use(cors());
@@ -12,4 +13,8 @@ app.get('/', (req, res) => {
   res.send('Hello World')
 });
 
+app.use('/auth', authRoutes);
+
+
 app.listen(PORT, () => console.log(`서버가 포트 ${PORT}에서 실행 중입니다.`))
+
