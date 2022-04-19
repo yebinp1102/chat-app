@@ -26,15 +26,15 @@ const Auth = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    const {fullName, username, password, phoneNumber, avatarURL} = form;
+    const { username, password, phoneNumber, avatarURL } = form;
     const URL = 'http://localhost:5000/auth';
     // 엔드 포인트는 isSignup의 상태 값에 따라
     // true이면, http://localhost:5000/auth/signup
     // false이면, http://localhost:5000/auth/login
     // axios로 서버로 응답 받은 data는 cookies에 저장하기 위해 token, userId, hasedPassword로 다시 구조화
-    const { data: { token, userId, hashedPassword } } = await axios.post(`${URL}/${isSignup ? 'signup': 'login'}`, {
-      username, password, fullName, phoneNumber, avatarURL
-    })
+    const { data: { token, userId, hashedPassword, fullName } } = await axios.post(`${URL}/${isSignup ? 'signup' : 'login'}`, {
+      username, password, fullName: form.fullName, phoneNumber, avatarURL,
+    });
 
     // 서버로부터 받는 모든 데이터는 cookies라는 객체에 저장한다. 
     cookies.set('token', token);

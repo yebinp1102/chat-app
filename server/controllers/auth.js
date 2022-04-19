@@ -10,12 +10,12 @@ const app_id = process.env.STREAM_APP_ID;
 
 const signup = async (req, res) => {
   try{
-    const {fullName, username, password, phoneNumber} = req.body;
+    const { fullName, username, password, phoneNumber } = req.body;
     const userId = crypto.randomBytes(16).toString('hex'); // crypto를 이용해 랜덤한 16진수의 문자열을 만든다.
     const serverClient = connect(api_key, api_secret, app_id);  // serverClient는 유저 토큰을 생성하기 위해 사용될 것이다.
     const hashedPassword = await bcrypt.hash(password, 10);  // hash 메서드는 패스워드를 레벨 10정도의 암호화 수준을 사용.
     const token = serverClient.createUserToken(userId);
-    res.status(200).json({token, fullName, username, userId, hashedPassword, phoneNumber})
+    res.status(200).json({ token, fullName, username, userId, hashedPassword, phoneNumber });
   }catch(err){
     console.log(err)
     res.status(500).json({message: err})

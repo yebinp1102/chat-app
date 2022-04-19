@@ -25,7 +25,7 @@ const ChannelSearch = () => {
   return (
     <div className='channel-search__container'>
       <div className='channel-search__input__wrapper'>
-        <BiSearchAlt2 className='channel-search__input_icon color-white'  />
+        <BiSearchAlt2 className='channel-search__input__icon color-white'  />
         <input className='channel-search__input__text' 
           placeholder='검색'
           type='text'
