@@ -4,6 +4,8 @@ import axios from 'axios'
 
 import signinImage from '../assets/loginImage.svg'
 
+const cookies = new Cookies();
+
 const initialState = {
   fullName: '',
   username: '',
@@ -21,8 +23,33 @@ const Auth = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    const {fullName, username, password, phoneNumber, avatarURL} = form;
+    const URL = 'http://localhost:5000/auth';
+    // 엔드 포인트는 isSignup의 상태 값에 따라
+    // true이면, http://localhost:5000/auth/signup
+    // false이면, http://localhost:5000/auth/login
+    // axios로 서버로 응답 받은 data는 cookies에 저장하기 위해 token, userId, hasedPassword로 다시 구조화
+    const { data: { token, userId, hashedPassword } } = await axios.post(`${URL}/${isSignup ? 'signup': 'login'}`, {
+      username, password, fullName, phoneNumber, avatarURL
+    })
+
+    // 서버로부터 받는 모든 데이터는 cookies라는 객체에 저장한다. 
+    cookies.set('token', token);
+    cookies.set('username', username);
+    cookies.set('fullName', fullName);
+    cookies.set('userId', userId);
+
+    if(isSignup){
+      cookies.set('phoneNumber', phoneNumber);
+      cookies.set('avatarURL', avatarURL);
+      cookies.set('hashedPassword', hashedPassword);
+    }
+
+    // 쿠키에 데이터 저장이 끝나면, 페이지를 리렌더링한다. 
+    window.location.reload();
   }
 
   const switchMode = () => {
