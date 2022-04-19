@@ -1,7 +1,8 @@
 const {connect} = require('getstream')
 const bcrypt = require('bcrypt')
-const StreamChat = require('stream-chat')
+const StreamChat = require('stream-chat').StreamChat
 const crypto = require('crypto')
+require('dotenv').config();
 
 const api_key = process.env.STREAM_API_KEY;
 const api_secret = process.env.STREAM_API_SECRET;
@@ -21,23 +22,23 @@ const signup = async (req, res) => {
   }
 };
 
-const login = (req, res) => {
+const login = async (req, res) => {
   try{
-    const {username, password} = req.body;
-    const serverClient = connect(api_key, api_secret, app_id);  // serverClient는 유저 토큰을 생성하기 위해 사용될 것이다.
+    const { username, password } = req.body;
+    const serverClient = connect(api_key, api_secret, app_id);
     const client = StreamChat.getInstance(api_key, api_secret);
-    const { users } = await client.queryUsers({name: username})
-    if(!users.length) return res.status(400).json({message: '존재하지 않는 유저입니다.'})
-    const success = await bcrypt.compare(password, users[0].hashedPassword)
+    const { users } = await client.queryUsers({ name: username });
+    if(!users.length) return res.status(400).json({ message: '존재 하지 않는 사용자 입니다.' });
+    const success = await bcrypt.compare(password, users[0].hashedPassword);
     const token = serverClient.createUserToken(users[0].id);
-    if(success){
-      return res.status(200).json({ token, fullName: users[0].fullName, username, userId: users[0].id })
-    }else{
-      return res.status(500).json({ message: '올바르지 않은 비밀번호 입니다.' })
+    if(success) {
+      res.status(200).json({ token, fullName: users[0].fullName, username, userId: users[0].id});
+    } else {
+        res.status(500).json({ message: '올바르지 않은 비밀번호 입니다.' });
     }
-  }catch(err){
-    console.log(err)
-    res.status(500).json({message: err})
+  }catch (error) {ads
+    console.log(error);
+    res.status(500).json({ message: error });
   }
 };
 
