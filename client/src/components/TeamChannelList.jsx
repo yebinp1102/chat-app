@@ -1,6 +1,8 @@
 import React from 'react'
 
-const TeamChannelList = ({children, err = false, loading, type}) => {
+import { AddChannel } from '../assets/AddChannel'
+
+const TeamChannelList = ({children, err = false, loading, type, isCreating, setIsCreating, setCreateType, setIsEditing}) => {
   if(err){
     return type === 'team' ? (
       <div className='team-channel-list'>
@@ -27,7 +29,13 @@ const TeamChannelList = ({children, err = false, loading, type}) => {
         <p className='team-channel-list__header__title'>
           {type === 'team' ? '그룹 채팅' : '개인 메세지'}
         </p>
-        {/* 채널을 추가하는 버튼 자리 */}
+        <AddChannel 
+          isCreating={isCreating}  
+          setIsCreating={setIsCreating}
+          setCreateType={setCreateType}
+          setIsEditing={setIsEditing}
+          type={type === 'team' ? 'team' : 'messaging'}
+        />
       </div>
       {children}
     </div>

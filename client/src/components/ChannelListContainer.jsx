@@ -28,7 +28,7 @@ const CompanyHeader = () => (
   </div>
 )
 
-const ChannelListContainer = () => {
+const ChannelListContainer = ({isCreating, setIsCreating, setCreateType, setIsEditing}) => {
 
   const logout = () => {
     cookies.remove("token");
@@ -55,6 +55,10 @@ const ChannelListContainer = () => {
             <TeamChannelList 
               {...listProps}
               type="team"  // 메세지 종류는 크게 팀(그룹)메세지와 개인 메세지(DM)로 나뉘기 때문에, type으로 구분
+              isCreating={isCreating}
+              setIsCreating={setIsCreating}
+              setCreateType={setCreateType}
+              setIsEditing={setIsEditing}
             />
           )}
           Preview={(previewProps)=>(
@@ -71,6 +75,10 @@ const ChannelListContainer = () => {
             <TeamChannelList 
               {...listProps}
               type="messaging" 
+              isCreating={isCreating}
+              setIsCreating={setIsCreating}
+              setCreateType={setCreateType}
+              setIsEditing={setIsEditing}
             />
           )}
           Preview={(previewProps)=>(

@@ -1,8 +1,37 @@
-import React from 'react'
+import React, {useState} from 'react'
+import { useChatContext } from 'stream-chat-react'
+import { UserList } from './'
+import { CloseCreateChannel } from '../assets/CloseCreateChannel'
 
-const CreateChannel = () => {
+const ChannelNameInput = ({ channelName = '', setChannelName}) => {
+    const handleChange = (e) => {
+      e.preventDefault();
+      setChannelName(e.target.value)
+    }
+
+  return(
+    <div className='channel-name-input__wrapper'>
+      <p>이름</p>
+      <input
+        value={channelName}
+        onChange={handleChange}
+        placeholder="채널 이름(공백 없이)"
+      />
+      <p>초대하기</p>
+    </div>
+  )
+}
+
+const CreateChannel = ({createType, setIsCreating}) => {
+  const [channelName, setChannelName] = useState('');
   return (
-    <div>CreateChannel</div>
+    <div className='create-channel__container'>
+      <div className='create-channel__header'>
+        <p>{createType === 'team' ? '새 채널 생성하기' : '메세지 보내기'}</p>
+        <CloseCreateChannel setIsCreating={setIsCreating} />
+      </div>
+      {createType === 'team' && <ChannelNameInput channelName={channelName} setChannelName={setChannelName} />}
+    </div>
   )
 }
 
