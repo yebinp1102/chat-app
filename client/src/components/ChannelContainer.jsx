@@ -1,6 +1,6 @@
 import React from 'react'
-import { Channel, useChatContext } from 'stream-chat-react'
-import { ChannelInner, CreateChannel, EditChannel, TeamMessage} from './'
+import { Channel, useChatContext, MessageTeam } from 'stream-chat-react'
+import { ChannelInner, CreateChannel, EditChannel} from './'
 
 const ChannelContainer = ({isCreating, setIsCreating, isEditing, setIsEditing, createType}) => {
   // 현재 체널에 대한 구체적인 정보를 제공한다.
@@ -35,7 +35,7 @@ const ChannelContainer = ({isCreating, setIsCreating, isEditing, setIsEditing, c
     <div className='channel__container'>
       <Channel
         EmptyStateIndicator={EmptyState}
-        Message={(messageProps, i)=><TeamMessage key={i} {...messageProps} />}
+        Message={(messageProps, i)=><MessageTeam key={i} {...messageProps} />}
       >
         <ChannelInner 
           setIsEditing={setIsEditing}
