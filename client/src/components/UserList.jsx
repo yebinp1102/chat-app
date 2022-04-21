@@ -14,10 +14,15 @@ const ListContainer = ({children}) => {
   )
 }
 
-const UserItem = ({ user }) => {
+const UserItem = ({ user, setSelectedUsers }) => {
   const [selected, setSelected] = useState(false)
 
   const handleSelect = () => {
+    if(selected){
+      setSelectedUsers( prevUsers => prevUsers.filter((prevUser) => prevUser !== user.id ))
+    }else{
+      setSelectedUsers(prevUser => [...prevUser, user.id])
+    }
     setSelected(preSelected => !preSelected)
   }
 
@@ -36,11 +41,12 @@ const UserItem = ({ user }) => {
   )
 }
 
-const UserList = () => {
+const UserList = ({ setSelectedUsers }) => {
   const { client } = useChatContext()
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false)
-  const [listEmpty, setListEmpty] = useState(false) 
+  const [listEmpty, setListEmpty] = useState(false)
+  const [error, setError] = useState(false)
 
   useEffect(()=>{
     const getUsers = async () => {
@@ -57,12 +63,32 @@ const UserList = () => {
           setListEmpty(true)
         }
       }catch(err){
-        console.log(err)
+        setError(true)
       }
       setLoading(false)
     }
     if(client) getUsers()
   },[])
+
+  if(error){
+    return(
+      <ListContainer>
+        <div className='user-list__message'>
+            로딩에 에러가 발생했습니다. 다시 시도 해주세요.
+        </div>        
+      </ListContainer>
+    )
+  }
+
+  if(listEmpty){
+    return(
+      <ListContainer>
+        <div className='user-list__message'>
+            찾는 유저가 존재하지 않습니다. 
+        </div>        
+      </ListContainer>
+    )
+  }
 
   return (
     <ListContainer>
@@ -73,7 +99,7 @@ const UserList = () => {
         : 
         (
           users?.map((user, i)=> (
-            <UserItem index={i} key={user.id} user={user} />
+            <UserItem index={i} key={user.id} user={user} setSelectedUsers={setSelectedUsers} />
           ))
         )
       }
