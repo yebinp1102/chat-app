@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { ChannelList, useChatContext} from 'stream-chat-react'
 import Cookies from 'universal-cookie'
 import { ChannelSearch, TeamChannelList, TeamChannelPreview} from '.'
@@ -28,7 +28,15 @@ const CompanyHeader = () => (
   </div>
 )
 
-const ChannelListContainer = ({isCreating, setIsCreating, setCreateType, setIsEditing}) => {
+const customChannelTeamFilter = (channels) => {
+  return channels.filter(channel => channel.type === 'team')
+}
+const customChannelMessagingFilter = (channels) => {
+  return channels.filter(channel => channel.type === 'messaging')
+}
+
+const ChannelListContent = ({isCreating, setIsCreating, setCreateType, setIsEditing, setToggleContainer}) => {
+  const { client } = useChatContext()
 
   const logout = () => {
     cookies.remove("token");
@@ -42,6 +50,8 @@ const ChannelListContainer = ({isCreating, setIsCreating, setCreateType, setIsEd
     window.location.reload()
   }
 
+  const filters = {members: { $in: [client.userID] }}
+
   return (
     <>
       <SideBar logout={logout} />
@@ -49,8 +59,8 @@ const ChannelListContainer = ({isCreating, setIsCreating, setCreateType, setIsEd
         <CompanyHeader />
         <ChannelSearch />
         <ChannelList 
-          filters={{}}
-          channelRenderFilterFn={()=>{ }}
+          filters={filters}
+          channelRenderFilterFn={customChannelTeamFilter}
           List={(listProps)=>(
             <TeamChannelList 
               {...listProps}
@@ -59,18 +69,22 @@ const ChannelListContainer = ({isCreating, setIsCreating, setCreateType, setIsEd
               setIsCreating={setIsCreating}
               setCreateType={setCreateType}
               setIsEditing={setIsEditing}
+              setToggleContainer={setToggleContainer}
             />
           )}
           Preview={(previewProps)=>(
             <TeamChannelPreview 
               {...previewProps}
               type="team"
+              setIsCreating={setIsCreating}
+              setIsEditing={setIsEditing}
+              setToggleContainer={setToggleContainer}
             />
           )}
         />
         <ChannelList 
-          filters={{}}
-          channelRenderFilterFn={()=>{ }}
+          filters={filters}
+          channelRenderFilterFn={customChannelMessagingFilter}
           List={(listProps)=>(
             <TeamChannelList 
               {...listProps}
@@ -79,14 +93,48 @@ const ChannelListContainer = ({isCreating, setIsCreating, setCreateType, setIsEd
               setIsCreating={setIsCreating}
               setCreateType={setCreateType}
               setIsEditing={setIsEditing}
+              setToggleContainer={setToggleContainer}
             />
           )}
           Preview={(previewProps)=>(
             <TeamChannelPreview 
               {...previewProps}
               type="messaging"
+              setIsCreating={setIsCreating}
+              setIsEditing={setIsEditing}
+              setToggleContainer={setToggleContainer}
             />
           )}
+        />
+      </div>
+    </>
+  )
+}
+
+const ChannelListContainer = ({ setCreateType, setIsCreating, setIsEditing }) => {
+  const [ toggleContainer, setToggleContainer] = useState(false)
+  return(
+    <>
+      {/* 테블릿 이상의 해상도를 가진 기기를 위한 컨테이너 */}
+      <div className='channel-list__container'>
+        <ChannelListContent 
+          setIsCreating={setIsCreating}
+          setCreateType={setCreateType}
+          setIsEditing={setIsEditing}
+        />
+      </div>
+
+      {/* 모바일 기기를 위한 컨테이너 */}
+      <div className='channel-list__container-responsive'
+        style={{ left: toggleContainer ? "0%" : "-89%" , background: "#005fff"}}
+      >
+        <div className='channel-list__container-toggle' onClick={()=>setToggleContainer(prevToggleContainer => !prevToggleContainer)}>
+        </div>
+        <ChannelListContent 
+          setIsCreating={setIsCreating}
+          setCreateType={setCreateType}
+          setIsEditing={setIsEditing}
+          setToggleContainer={setToggleContainer}
         />
       </div>
     </>
