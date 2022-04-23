@@ -9,11 +9,13 @@ const cookies = new Cookies();
 
 const SideBar = ({logout}) => (
   <nav className='channel-list__sidebar'>
+    {/* 로고 아이콘 */}
     <div className='channel-list__sidebar__icon1'>
       <div className='icon1__inner'>
         <BsFillChatSquareFill />
       </div>
     </div>
+    {/* 로그아웃 아이콘 */}
     <div className='channel-list__sidebar__icon2'>
       <div className='icon1__inner' onClick={logout}>
         <FiLogOut />
@@ -57,13 +59,15 @@ const ChannelListContent = ({isCreating, setIsCreating, setCreateType, setIsEdit
       <SideBar logout={logout} />
       <div className='channel-list__list__wrapper'>
         <CompanyHeader />
-        <ChannelSearch />
+        <ChannelSearch 
+          setToggleContainer={setToggleContainer}
+        />
         <ChannelList 
           filters={filters}
           channelRenderFilterFn={customChannelTeamFilter}
           List={(listProps)=>(
             <TeamChannelList 
-              {...listProps}
+              {...listProps} // TeamChannelList가 ChannelList의 모든 prop를 상속받는다. 
               type="team"  // 메세지 종류는 크게 팀(그룹)메세지와 개인 메세지(DM)로 나뉘기 때문에, type으로 구분
               isCreating={isCreating}
               setIsCreating={setIsCreating}

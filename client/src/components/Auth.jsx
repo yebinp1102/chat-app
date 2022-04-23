@@ -16,7 +16,7 @@ const initialState = {
 }
 
 const Auth = () => {
-  const [isSignup, setIsSignup] = useState(true)
+  const [isSignup, setIsSignup] = useState(false)
   const [form, setForm] = useState(initialState);
 
   const handleChange = (e) => {
@@ -25,7 +25,6 @@ const Auth = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
     const { username, password, phoneNumber, avatarURL } = form;
     const URL = 'http://localhost:5000/auth';
     // 엔드 포인트는 isSignup의 상태 값에 따라

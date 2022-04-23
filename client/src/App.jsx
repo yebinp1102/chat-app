@@ -1,14 +1,22 @@
 import React, { useState } from 'react'
+
+// stream chat api
 import { StreamChat } from 'stream-chat'
 import { Chat } from 'stream-chat-react'
-import Cookies from 'universal-cookie'
-import { ChannelListContainer, ChannelContainer, Auth} from './components'
-import './App.css'
 import 'stream-chat-react/dist/css/index.css'
+
+// 쿠키
+import Cookies from 'universal-cookie'
+
+// 컴포넌트
+import { ChannelListContainer, ChannelContainer, Auth} from './components'
+
+// CSS
+import './App.css'
 
 const cookies = new Cookies();
 const apiKey = '5ybq95mvc2w9';
-const client = StreamChat.getInstance(apiKey);
+const client = StreamChat.getInstance(apiKey);  // stream-chat의 인스턴스 생성
 const authToken = cookies.get("token")
 
 if(authToken){
@@ -31,13 +39,13 @@ const App = () => {
   return (
     <div className='app__wrapper'>
       <Chat client={client} theme="team light">
-        <ChannelListContainer 
+        <ChannelListContainer  // 사이드바 컴포넌트
           isCreating={isCreating}  
           setIsCreating={setIsCreating}
           setCreateType={setCreateType}
           setIsEditing={setIsEditing}
         />
-        <ChannelContainer 
+        <ChannelContainer  // 실제 채팅 기능 구현한 컴포넌트
           isCreating={isCreating}  
           setIsCreating={setIsCreating}
           isEditing={isEditing}

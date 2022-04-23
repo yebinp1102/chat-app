@@ -17,7 +17,7 @@ const TeamChannelList = ({children, err = false, loading, type, isCreating, setI
     return(
       <div className='team-channel-list'>
         <p className='team-channel-list__message loading'>
-          {type === 'team' ? '채널' : '메세지'} loading ... 
+          {type === 'team' ? '채널' : '메세지'} 로딩중 ... 
         </p>
       </div>
     )
@@ -38,8 +38,8 @@ const TeamChannelList = ({children, err = false, loading, type, isCreating, setI
           setToggleContainer={setToggleContainer}
         />
       </div>
-      {children}
-    </div>
+      {children} 
+    </div> // children는 TeamChannelList 컴포넌트로 전달된 값을 렌더링 한다.
   )
 }
 
