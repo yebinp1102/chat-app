@@ -11,6 +11,7 @@ interface InputProps {
   register: UseFormRegister<FieldValues>;
   errors: FieldErrors;
   disabled?: boolean;
+  text: string;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -21,6 +22,7 @@ const Input: React.FC<InputProps> = ({
   register,
   errors,
   disabled,
+  text
 }) => {
   return (
     <div>
@@ -28,7 +30,7 @@ const Input: React.FC<InputProps> = ({
         htmlFor={id}
         className="block text-sm font-medium leading-6 text-gray-900"
       >
-        {label}
+        {text}
       </label>
       <div className="mt-2">
         <input

@@ -7,6 +7,7 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import AuthSocialButton from "./AuthSocialButton";
 import { BsGithub, BsGoogle, BsPeople } from "react-icons/bs";
 import { BiSolidGhost } from "react-icons/bi";
+import axios from "axios";
 
 type Variant = "LOGIN" | "REGISTER";
 
@@ -35,11 +36,13 @@ const AuthForm = () => {
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    setIsLoading(true);
+    setIsLoading(true);``
     if (variant === "REGISTER") {
-      // axios register
+      axios.post('/api/register', data);
+
     } else if (variant === "LOGIN") {
       // NextAuth Social Sign In
+
     }
   };
 
@@ -54,21 +57,23 @@ const AuthForm = () => {
       <div className="bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10">
         <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
           {variant === "REGISTER" && (
-            <Input id="이름" label="이름" register={register} errors={errors} />
+            <Input id="name" label="name" text="이름" register={register} errors={errors} />
           )}
           <Input
-            id="이메일"
-            label="이메일"
+            id="email"
+            label="email"
             type="email"
             register={register}
             errors={errors}
+            text="이메일"
           />
           <Input
-            id="비밀번호"
-            label="비밀번호"
+            id="password"
+            label="password"
             type="password"
             register={register}
             errors={errors}
+            text="비밀번호"
           />
           <div>
             <Button disabled={isLoading} fullWidth type="submit">
