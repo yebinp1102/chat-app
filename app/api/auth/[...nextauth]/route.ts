@@ -20,7 +20,7 @@ export const authOptions: AuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string
     }),
     CredentialsProvider({  // 소셜 로그인 말고 일반 로그인에 필요한 데이터 정의
-      name: 'credentials',
+      name: 'Credentials',
       credentials: {
         email: { label: 'email', type: 'text' },
         password: { label: 'password', type: 'password' },
@@ -35,7 +35,7 @@ export const authOptions: AuthOptions = {
         const user = await prisma.user.findUnique({
           where: {
             email: credentials.email
-          }
+          },
         });
 
         // 유저 검색이 불가능하거나, 소셜 로그인 계정인 경우 로그인 불가 
@@ -68,4 +68,4 @@ export const authOptions: AuthOptions = {
 
 const handler = NextAuth(authOptions);
 
-export {handler as Get, handler as POST}; 
+export {handler as GET, handler as POST};
