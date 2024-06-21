@@ -28,7 +28,7 @@ export const authOptions: AuthOptions = {
       // authorize: 로그인을 하기 위해 사용자가 입력한 값들을 검증하는 함수. 검증된 유저의 정보만 반환
       async authorize (credentials) {
         if(!credentials?.email || !credentials?.password){
-          throw new Error('Invalid Credentials');
+          throw new Error('Invalid Credentials. email and password do not exist');
         }
 
         // 사용자가 입력한 이메일에 해당하는 유저가 있는지 검색
@@ -41,7 +41,7 @@ export const authOptions: AuthOptions = {
         // 유저 검색이 불가능하거나, 소셜 로그인 계정인 경우 로그인 불가 
         // 유저가 구글이나 깃헙을 통해 회원가입한 경우 해쉬화된 비밀번호가 없음
         if(!user || !user?.hashedPassword){
-          throw new Error('Invalid credentials');
+          throw new Error('Invalid credentials. Can not find user account');
         }
 
         // 사용자가 입력한 비밀번호와 DB에 저장된 비밀번호 비교 검증
@@ -52,7 +52,7 @@ export const authOptions: AuthOptions = {
 
         // 비밀번호가 틀린 경우 에러 던짐
         if(!isCorrectPassword){
-          throw new Error('Invalid credentials');
+          throw new Error('Invalid credentials. Password error');
         }
 
         return user;        

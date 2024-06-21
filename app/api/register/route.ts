@@ -7,7 +7,6 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { email, name, password } = body;
-    console.log(body);
 
     if (!email || !name || !password) {
       return new NextResponse("누락된 정보가 있습니다. ", { status: 400 });

@@ -49,11 +49,10 @@ const AuthForm = () => {
     
     if (variant === "LOGIN") {
       signIn('credentials', {
-        data,
+        ...data,
         redirect: false,
       })
       .then((callback) => {
-        
         if(callback?.error){
           return toast.error('invalid error')
         }
@@ -70,6 +69,16 @@ const AuthForm = () => {
     setIsLoading(true);
 
     // NextAuth Social Sign In
+    signIn(action, {redirect: false})
+    .then((callback) => {      
+      if(callback?.error){
+        toast.error("Invalid Credentails");
+      }
+      if(callback?.ok && !callback?.error){
+        toast.success("Logged in!")
+      }
+    })
+    .finally(() => setIsLoading(false));
   };
 
   return (
