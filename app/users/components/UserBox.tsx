@@ -18,14 +18,12 @@ const UserBox: React.FC<UserBoxProps> = ({ data }) => {
     setIsLoading(true);
 
     // 유저를 선택하면, 해당 유저와 대화할 수 있게 세팅
-    axios
-      .post("/api/conversations", {
-        userId: data.id,
-      })
-      .then((data) => {
-        router.push(`/conversations/${data.data.id}`);
-      })
-      .finally(() => setIsLoading(false));
+    axios.post("/api/conversations", {userId: data.id,})
+    .then((data) => {
+      router.push(`/conversations/${data.data.id}`);
+    })
+    .finally(() => setIsLoading(false));
+    
   }, [data, router]);
 
   return (
